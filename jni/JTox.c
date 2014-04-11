@@ -559,8 +559,8 @@ static void callback_friendrequest(Tox *tox, uint8_t *pubkey, uint8_t *message, 
 
 	addr_to_hex(pubkey, buf);
 	_pubkey = (*env)->NewStringUTF(env, buf);
-	_message = (*env)->NewByteArray(env, length - 1);
-	(*env)->SetByteArrayRegion(env, _message, 0, length - 1, (jbyte *) message);
+	_message = (*env)->NewByteArray(env, length);
+	(*env)->SetByteArrayRegion(env, _message, 0, length, (jbyte *) message);
 
 	(*env)->CallVoidMethod(env, ptr->handler, meth, _pubkey, _message);
 	UNUSED(tox);
@@ -578,8 +578,8 @@ static void callback_friendmessage(Tox *tox, int friendnumber, uint8_t *message,
 	class = (*env)->GetObjectClass(env, ptr->handler);
 	meth = (*env)->GetMethodID(env, class, "onMessage", "(I[B)V");
 
-	_message = (*env)->NewByteArray(env, length - 1);
-	(*env)->SetByteArrayRegion(env, _message, 0, length - 1, (jbyte *) message);
+	_message = (*env)->NewByteArray(env, length);
+	(*env)->SetByteArrayRegion(env, _message, 0, length, (jbyte *) message);
 	(*env)->CallVoidMethod(env, ptr->handler, meth, friendnumber, _message);
 
 	UNUSED(tox);
@@ -597,8 +597,8 @@ static void callback_action(Tox *tox, int32_t friendnumber, uint8_t *action, uin
 	class = (*env)->GetObjectClass(env, ptr->handler);
 	meth = (*env)->GetMethodID(env, class, "onAction", "(I[B)V");
 
-	_action = (*env)->NewByteArray(env, length - 1);
-	(*env)->SetByteArrayRegion(env, _action, 0, length - 1, (jbyte *) action);
+	_action = (*env)->NewByteArray(env, length);
+	(*env)->SetByteArrayRegion(env, _action, 0, length, (jbyte *) action);
 	(*env)->CallVoidMethod(env, ptr->handler, meth, friendnumber, _action);
 
 	UNUSED(tox);
@@ -622,8 +622,8 @@ static void callback_namechange(Tox *tox, int32_t friendnumber, uint8_t *newname
 	jtoxclass = (*env)->GetObjectClass(env, ptr->jtox);
 	jToxmeth = (*env)->GetMethodID(env, jtoxclass, "onNameChange", "(I[B)V");
 
-	_newname = (*env)->NewByteArray(env, length - 1);
-	(*env)->SetByteArrayRegion(env, _newname, 0, length - 1, (jbyte *) newname);
+	_newname = (*env)->NewByteArray(env, length);
+	(*env)->SetByteArrayRegion(env, _newname, 0, length, (jbyte *) newname);
 	(*env)->CallVoidMethod(env, ptr->jtox, jToxmeth, friendnumber, _newname);
 	(*env)->CallVoidMethod(env, ptr->handler, handlerMeth, friendnumber, _newname);
 
@@ -647,8 +647,8 @@ static void callback_statusmessage(Tox *tox, int32_t friendnumber, uint8_t *news
 	jtoxclass = (*env)->GetObjectClass(env, ptr->jtox);
 	jtoxmeth = (*env)->GetMethodID(env, jtoxclass, "onStatusMessage", "(I[B)V");
 
-	_newstatus = (*env)->NewByteArray(env, length - 1);
-	(*env)->SetByteArrayRegion(env, _newstatus, 0, length - 1, (jbyte *) newstatus);
+	_newstatus = (*env)->NewByteArray(env, length);
+	(*env)->SetByteArrayRegion(env, _newstatus, 0, length, (jbyte *) newstatus);
 	(*env)->CallVoidMethod(env, ptr->jtox, jtoxmeth, friendnumber, _newstatus);
 	(*env)->CallVoidMethod(env, ptr->handler, handlermeth, friendnumber, _newstatus);
 
